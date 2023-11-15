@@ -20,7 +20,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
     image_preview = models.ImageField(upload_to='product/', **NULLABLE, verbose_name='Изображение (превью)')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    parent_category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     purchase_price = models.IntegerField(verbose_name='Цена за покупку')
     date_of_creation = models.DateTimeField(**NULLABLE, verbose_name='Дата создания')
     date_of_last_modification = models.DateTimeField(**NULLABLE, verbose_name='Дата последнего изменения')
@@ -29,7 +29,7 @@ class Product(models.Model):
 
     def __str__(self):
         # Строковое отображение объекта
-        return f'{self.name} \n {self.description} \n {self.category} \n {self.purchase_price}'
+        return f'{self.name} \n {self.description} \n {self.parent_category} \n {self.purchase_price}'
 
     class Meta:
         verbose_name = 'продукт'
