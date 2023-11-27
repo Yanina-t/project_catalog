@@ -9,6 +9,7 @@ class Category(models.Model):
     # created_at = models.DateTimeField(**NULLABLE, verbose_name='Создано')
 
     def __str__(self):
+        # Строковое отображение объекта
         return f'{self.name}'
 
     class Meta:

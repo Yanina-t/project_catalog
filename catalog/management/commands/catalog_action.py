@@ -24,11 +24,12 @@ class Command(BaseCommand):
             )
         Category.objects.bulk_create(category_for_create)
 
+
         # product_list = [ {'name': 'Dell XPS 13', 'description': 'Мощный и компактный ноутбук', 'purchase_price':
         # 1500}, {'name': 'MacBook Air', 'description': 'Легкий и стильный ноутбук от Apple', 'purchase_price':
-        # 1300}, {'name': 'Lenovo ThinkPad X1 Carbon', 'description': 'Производительный бизнес-ноутбук',
-        # 'purchase_price': 1600}, {'name': 'iPhone 13 Pro', 'description': 'Последняя модель iPhone',
-        # 'purchase_price': 1200}, {'name': 'Samsung Galaxy S21', 'description': 'Мощный Android-смартфон',
+        # 290990}, {'name': 'Lenovo ThinkPad X1 Carbon', 'description': 'Производительный бизнес-ноутбук',
+        # 'purchase_price': 1600}, {'name': 'iPhone 15 Pro', 'description': 'Последняя модель iPhone',
+        # 'purchase_price': 147990}, {'name': 'Samsung Galaxy S21', 'description': 'Мощный Android-смартфон',
         # 'purchase_price': 1000}, {'name': 'Google Pixel 6', 'description': 'Смартфон с отличной камерой',
         # 'purchase_price': 900}, {'name': 'LG OLED C1', 'description': '4K OLED телевизор', 'purchase_price': 2000},
         # {'name': 'Samsung QLED Q80A', 'description': 'QLED-телевизор с технологией Quantum HDR', 'purchase_price':
