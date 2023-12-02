@@ -1,0 +1,41 @@
+{% extends 'blog/blog.html' %}
+{% load my_tags_blog %}
+{% block content%}
+<div class="row justify-content-center">
+    <div class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'blog:create' %}">Добавить статью</a>
+    </div>
+    {% for object in object_list %}
+    <div class="col-md-4 mb-4">
+        <div class="card mb-4 box-shadow">
+            <img class="img-fluid" src="{{ object.img_preview|mymedia }}" alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text bold fs-5 text-md-start text-center">{{ object.title }}</p>
+                <p class="card-text">{{ object.content|truncatechars:100 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">{{ object.views_count }} 👁️</small>
+                    <small class="text-muted">{{ object.date_of_creation|date:"d.m.Y H:i" }}</small>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="btn-group">
+                        <a href="{% url 'blog:view' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                        <a href="{% url 'blog:edit' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        <a href="{% url 'blog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    </div>
+                </div>
+
+                <div class="btn-group mt-3">
+                    {% if object.is_published %}
+                        <p class="card-text bold fs-6 text-md-start text-center text-success mb-1">Статья опубликована</p>
+                        <a href="{% url 'blog:published_content' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Скрыть</a>
+                    {% else %}
+                        <p class="card-text bold fs-6 text-md-start text-center text-warning mb-1">Статья не опубликована</p>
+                        <a href="{% url 'blog:published_content' object.pk %}" type="button" class="btn btn-sm btn-outline-success">Опубликовать</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

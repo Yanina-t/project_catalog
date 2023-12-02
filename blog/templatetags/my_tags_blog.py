@@ -8,4 +8,4 @@ def mymedia(val):
     if val:
         return f"/media/{val}"
     # return '#'
-    return '/static/img/no_img.jpg'
+    return '/static/img/content.jpg'
