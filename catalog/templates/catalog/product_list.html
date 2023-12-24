@@ -2,6 +2,9 @@
 {% load my_tags %}
 {% block content%}
 <div class="row justify-content-center">
+    <div class="col-12 mb-5">
+        <a class="btn btn-outline-primary" href="{% url 'catalog:product_create' pk=category_pk %}">Добавить продукт</a>
+    </div>
     {% for object in object_list %}
     <div class="col-md-4">
         <div class="card mb-4 box-shadow">
@@ -12,10 +15,17 @@
                 <p class="card-text">{{ object.description|truncatechars:100 }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary">Купить (в корзину)</button>
+                      <button type="button" class="btn btn-sm btn-outline-primary">Купить (в корзину)</button>
                     </div>
                     <small class="text-muted">{{ object.purchase_price }} руб</small>
                 </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="btn-group">
+                    <a type="button" class="btn btn-sm btn-outline-secondary" >Просмотр</a>
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:product_edit' object.pk%}">Редактировать</a>
+                    <a type="button" class="btn btn-sm btn-outline-danger"href="{% url 'catalog:product_delete' object.pk%}">Удалить</a>
+                </div>
+            </div>
             </div>
         </div>
     </div>

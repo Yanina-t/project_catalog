@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView, TemplateView
+from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from pytils.translit import slugify
 
 from blog.models import Blog
@@ -28,7 +28,6 @@ class BlogDetailView(DetailView):
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        self.object.views_count += 1
         self.object.save()
         return self.object
 

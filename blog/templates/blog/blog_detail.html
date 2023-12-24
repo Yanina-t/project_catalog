@@ -2,9 +2,12 @@
 {% load my_tags_blog %}
 {% block content%}
 
-<div class="col-md-4">
-    <div class="card mb-4 box-shadow">
-        <img class="img-fluid" src="{{ object.img_preview|mymedia }}" alt="Card image cap">
+<div class="col-md-12">
+    <div class="card mb-8 box-shadow">
+        <!-- Изображение -->
+        <img class="img-fluid mx-auto" style="width: 50%" src="{{ object.img_preview|mymedia }}" alt="Card image cap">
+    </div>
+    <div class="card mb-8 box-shadow">
         <div class="card-body">
             <p class="card-text bold fs-5 text-md-start text-center">{{ object.title }} ({{ object.slug }})</p>
             <p class="card-text">{{ object.content}}</p>

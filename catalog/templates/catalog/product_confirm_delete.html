@@ -1,0 +1,14 @@
+{% extends 'catalog/category.html' %}
+
+{% block content%}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>Хотите удалить продукт "{{ object.name }}"?</p>
+        <button type="submit" class="btn btn-primary">Подтвердить</button>
+        <a href="{% url 'catalog:products_category' object.parent_category.pk%}" type="button" class="btn btn-outline-secondary">Отмена</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

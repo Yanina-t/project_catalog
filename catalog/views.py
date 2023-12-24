@@ -1,7 +1,11 @@
+from django.forms import inlineformset_factory
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from pytils.translit import slugify
 
-from catalog.models import Category, Product
+from catalog.forms import ProductForm, VersionForm
+from catalog.models import Category, Product, Version
 
 
 def contact(request):
@@ -40,7 +44,97 @@ class ProductListView(ListView):
         context_data = super().get_context_data(*args, **kwargs)
         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
         context_data['title'] = f'Все товары категории {category_item.name}'
+        context_data['category_pk'] = category_item.pk
         return context_data
+
+
+# CreateRUD
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+
+    def form_valid(self, form):
+        new_product = form.save(commit=False)
+        new_product.parent_category_id = self.kwargs['pk']
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Возвращаем URL списка продуктов для текущей категории
+        return reverse('catalog:products_category', kwargs={'pk': self.object.parent_category.pk})
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+
+    def get_success_url(self):
+        return reverse('catalog:products_category', kwargs={'pk': self.object.parent_category.pk})
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, fields=('name', 'version_number', 'version_name', 'is_current'), extra=1)
+        if self.request.method == 'POST':
+            formset = VersionFormset(self.request.POST, instance=self.object)
+        else:
+            formset = VersionFormset(instance=self.object)
+        context_data['formset'] = formset
+        return context_data
+
+    def form_valid(self, form):
+        context_data = self.get_context_data()
+        formset = context_data['formset']
+        self.object = form.save()
+
+        if formset.is_valid():
+            for form in formset:
+                # Устанавливаем родительскую категорию для каждой версии
+                form.instance.parent_category = self.object.parent_category
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:products_category')
+
+
+# class ProductUpdateView(UpdateView):
+#     model = Product
+#     form_class = ProductForm
+#     # seccess_url = reverse_lazy('catalog:products_category')
+#
+#     # def get_success_url(self):
+#     #     # Возвращаем URL списка продуктов для текущей категории
+#     #     return reverse('catalog:products_category', kwargs={'pk': self.object.parent_category.pk})
+#
+#     def get_context_data(self, **kwargs):
+#         context_data = super().get_context_data(**kwargs)
+#         VersionFormset = inlineformset_factory(Category, Product, Version, form=VersionForm, extra=1)
+#         if self.request.method == 'POST':
+#             formset = VersionFormset(self.request.POST, instance=self.object)
+#         else:
+#             formset = VersionFormset(instance=self.object)
+#         context_data['formset'] = formset
+#         return context_data
+#
+#     def form_valid(self, form):
+#         context_data = super().get_context_data()
+#         formset = context_data['formset']
+#         self.object = form.save()
+#
+#         if formset.is_valid():
+#             formset.instance = self.object
+#             formset.save()
+#         return super().form_valid(form)
+#
+
+#
+# CRUDelete
+
+
+
+
+
 
 # def categories(request):
 #     context = {
