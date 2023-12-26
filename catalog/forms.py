@@ -12,24 +12,23 @@ class StyleFormMixin:
 
 
 class ProductForm(StyleFormMixin, forms.ModelForm):
+    forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
+                       'радар']
+
     class Meta:
         model = Product
         fields = ('name', 'description', 'image_preview', 'purchase_price', 'date_of_creation')
 
     def clean_name(self):
-        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
-                           'радар']
         name = self.cleaned_data.get('name', '')
-        for word in forbidden_words:
+        for word in self.forbidden_words:
             if word.lower() in name.lower():
                 raise ValidationError(f'Слово «{word}» не допускается в наименовании товара.')
         return name
 
     def clean_description(self):
-        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
-                           'радар']
         description = self.cleaned_data.get('description', '')
-        for word in forbidden_words:
+        for word in self.forbidden_words:
             if word.lower() in description.lower():
                 raise ValidationError(f'Слово «{word}» не допускается в описании товара.')
         return description

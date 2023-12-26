@@ -1,3 +1,7 @@
+    # path('view/<int:pk>/', ProductDetailView.as_view(), name='product_view'),
+    # path('edit/<int:pk>/', ProductUpdateView.as_view(), name='product_edit'),
+    # path('delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
+
 # project_catalog
 Задание 1\
 Подключите СУБД PostgreSQL для работы в проекте.\

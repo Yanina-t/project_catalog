@@ -76,12 +76,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+from decouple import config
+
+DB_PASSWORD = config('DB_PASSWORD')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project_django1',  # Название БД
-        'USER': 'postgres',  # Пользователь для подключения
-        'PASSWORD': '2309811',  # Пароль для этого пользователя
+        'ENGINE': config('DB_ENGINE', default=''),
+        'NAME': config('DB_NAME', default=''),
+        'USER': config('DB_USER', default=''),
+        'PASSWORD': config('DB_PASSWORD', default=''),
     }
 }
 
