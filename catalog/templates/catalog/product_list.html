@@ -13,17 +13,15 @@
             <div class="card-body">
                 <p class="card-text fw-bold fs-5">{{ object.name }}</p>
                 <p class="card-text">{{ object.description|truncatechars:100 }}</p>
+                <p class="card-text">{{ object.purchase_price }} руб</p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-primary">Купить (в корзину)</button>
-                    </div>
-                    <small class="text-muted">{{ object.purchase_price }} руб</small>
+                    <small class="text-muted">{{ object.user_product|default:"Создано до появления динозавров" }} </small>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-3">
                 <div class="btn-group">
                     <a type="button" class="btn btn-sm btn-outline-secondary" >Просмотр</a>
                     <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'catalog:product_edit' object.pk%}">Редактировать</a>
-                    <a type="button" class="btn btn-sm btn-outline-danger"href="{% url 'catalog:product_delete' object.pk%}">Удалить</a>
+                    <a type="button" class="btn btn-sm btn-outline-danger" href="{% url 'catalog:product_delete' object.pk%}">Удалить</a>
                 </div>
             </div>
             </div>

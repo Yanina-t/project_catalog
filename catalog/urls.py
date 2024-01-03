@@ -15,3 +15,17 @@ urlpatterns = [
     path('catalog/<int:pk>/edit/', ProductUpdateView.as_view(), name='product_edit'),
     path('catalog/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
 ]
+
+
+# <div class="card-body">
+#                     {% csrf_token %}
+#                     {{ form.as_p }}
+#                     <button type="submit" class="btn btn-success">
+#                         {% if object %}
+#                         Сохранить
+#                         {% else %}
+#                         Создать
+#                         {% endif %}
+#                     </button>
+#                     <a href="{% url 'catalog:products_category' object.parent_category.pk%}" type="button" class="btn btn-outline-secondary">Отмена</a>
+#                 </div>

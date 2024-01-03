@@ -1,5 +1,8 @@
 from django.db import models
 
+from config import settings
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -26,6 +29,8 @@ class Product(models.Model):
     purchase_price = models.IntegerField(verbose_name='Цена за покупку')
     date_of_creation = models.DateTimeField(**NULLABLE, verbose_name='Дата создания')
     date_of_last_modification = models.DateTimeField(**NULLABLE, verbose_name='Дата последнего изменения')
+    user_product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE,
+                                     verbose_name='Создатель')
 
     # in_stock = models.BooleanField(default=True, verbose_name='В наличии на складе')
 

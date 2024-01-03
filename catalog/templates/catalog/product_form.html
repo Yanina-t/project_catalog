@@ -14,14 +14,14 @@
                 <div class="card-body">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success">
-                        {% if object %}
-                        Сохранить
-                        {% else %}
-                        Создать
-                        {% endif %}
-                    </button>
-                    <a type="button" class="btn btn-outline-secondary">Отмена</a>
+                    {% if object %}
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                    <a href="{% url 'catalog:products_category' object.parent_category.pk%}" type="button"
+                       class="btn btn-outline-secondary">Отмена</a>
+                    {% else %}
+                    <button type="submit" class="btn btn-success">Создать</button>
+                    <a href="{% url 'catalog:category'%}" type="button" class="btn btn-outline-secondary">Отмена</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -33,10 +33,10 @@
                 <div class="card-body">
                     {{ formset.management_form }}
                     {% for form in formset.forms %}
-                        {{ form.as_p }}
-                        {% if not forloop.last %}
-                        <hr>
-                        {% endif %}
+                    {{ form.as_p }}
+                    {% if not forloop.last %}
+                    <hr>
+                    {% endif %}
                     {% endfor %}
                 </div>
             </div>

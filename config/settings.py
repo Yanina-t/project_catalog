@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -23,10 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2f68wg68yr3&)jqv@pq9s#jo2uq@kg91)fln)3*=)6sk&$qj5v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #изменила на False
+DEBUG = True  # изменила на False
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -40,6 +38,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'blog',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +71,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -84,11 +82,10 @@ DATABASES = {
     'default': {
         'ENGINE': config('DB_ENGINE', default=''),
         'NAME': config('DB_NAME', default=''),
-        'USER': config('DB_USER', default=''),
+        'USER': 'postgres',
         'PASSWORD': config('DB_PASSWORD', default=''),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -108,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -120,14 +116,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
-       BASE_DIR / 'static',
+    BASE_DIR / 'static',
 )
 
 # Default primary key field type
@@ -137,3 +132,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+# EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'yaninatest1@yandex.ru'  #адрес электронной почты Яндекс
+EMAIL_HOST_PASSWORD = 'aertflpdiqentodo'  # пароль Яндекс приложения
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # адрес электронной почты Яндекс
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # пароль Яндекс приложения

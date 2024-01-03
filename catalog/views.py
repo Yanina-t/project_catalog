@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
@@ -37,41 +38,44 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(parent_category=self.kwargs.get('pk'))
+        queryset = queryset.filter(parent_category=self.kwargs.get('pk'), )
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+        context_data['object_list'] = Product.objects.filter(user_product=self.request.user)
         context_data['title'] = f'Все товары категории {category_item.name}'
         context_data['category_pk'] = category_item.pk
         return context_data
 
 
 # CreateRUD
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
 
     def form_valid(self, form):
-        new_product = form.save(commit=False)
-        new_product.parent_category_id = self.kwargs['pk']
+        self.object = form.save(commit=False)
+        self.object.user_product = self.request.user
+        self.object.parent_category_id = self.kwargs['pk']
+        self.object.save()
+
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Возвращаем URL списка продуктов для текущей категории
         return reverse('catalog:products_category', kwargs={'pk': self.object.parent_category.pk})
 
-class ProductUpdateView(UpdateView):
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-
-    def get_success_url(self):
-        return reverse('catalog:products_category', kwargs={'pk': self.object.parent_category.pk})
+    success_url = reverse_lazy('catalog:category')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, fields=('name', 'version_number', 'version_name', 'is_current'), extra=1)
+        VersionFormset = inlineformset_factory(Product, Version, form=VersionForm,
+                                               fields=('name', 'version_number', 'version_name', 'is_current'), extra=1)
         if self.request.method == 'POST':
             formset = VersionFormset(self.request.POST, instance=self.object)
         else:
@@ -93,10 +97,9 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin , DeleteView):
     model = Product
-    success_url = reverse_lazy('catalog:products_category')
-
+    success_url = reverse_lazy('catalog:category')
 
 # class ProductUpdateView(UpdateView):
 #     model = Product
@@ -130,10 +133,6 @@ class ProductDeleteView(DeleteView):
 
 #
 # CRUDelete
-
-
-
-
 
 
 # def categories(request):
