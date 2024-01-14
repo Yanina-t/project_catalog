@@ -17,7 +17,13 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('name', 'description', 'image_preview', 'purchase_price', 'date_of_creation')
+        fields = ('name', 'description', 'image_preview', 'purchase_price', 'date_of_creation', 'parent_category')
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+        if not self.request.user.is_staff:
+            self.fields['parent_category'].widget = forms.HiddenInput()
 
     def clean_name(self):
         name = self.cleaned_data.get('name', '')

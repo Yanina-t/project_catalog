@@ -13,7 +13,22 @@
                 </div>
                 <div class="card-body">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    <!-- Добавьте условие для отображения/скрытия поля категории -->
+                    {% if user.is_staff %}
+                        {{ form.parent_category.label_tag }}
+                        {{ form.parent_category }}
+                    {% endif %}
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {{ form.image_preview.label_tag }}
+                    {{ form.image_preview }}
+                    {{ form.purchase_price.label_tag }}
+                    {{ form.purchase_price }}
+                    {{ form.date_of_creation.label_tag }}
+                    {{ form.date_of_creation }}
+
                     {% if object %}
                     <button type="submit" class="btn btn-success">Сохранить</button>
                     <a href="{% url 'catalog:products_category' object.parent_category.pk%}" type="button"

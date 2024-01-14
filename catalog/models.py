@@ -31,6 +31,7 @@ class Product(models.Model):
     date_of_last_modification = models.DateTimeField(**NULLABLE, verbose_name='Дата последнего изменения')
     user_product = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE,
                                      verbose_name='Создатель')
+    is_published = models.BooleanField(default=False, verbose_name='Признак публикации')
 
     # in_stock = models.BooleanField(default=True, verbose_name='В наличии на складе')
 

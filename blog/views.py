@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
@@ -7,6 +8,7 @@ from blog.models import Blog
 
 
 # Create your views here.
+@login_required
 def blog(request):
     context = {
         'object_list': Blog.objects.all(),
