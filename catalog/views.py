@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -8,6 +10,7 @@ from pytils.translit import slugify
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Category, Product, Version
+from catalog.services import get_categories_from_cache
 
 
 @login_required
@@ -29,11 +32,19 @@ def home(request):
     return render(request, 'catalog/index_home.html', context)
 
 
-class CategoryListView(LoginRequiredMixin, ListView):
-    model = Category
-    extra_context = {
+# class CategoryListView(LoginRequiredMixin, ListView):
+#     model = Category
+#     extra_context = {
+#         'title': 'Категории'
+#     }
+@login_required
+def categories(request):
+
+    context = {
+        'object_list': get_categories_from_cache(),
         'title': 'Категории'
     }
+    return render(request, 'catalog/category_list.html', context)
 
 
 class ProductListView(LoginRequiredMixin, UserPassesTestMixin, ListView):

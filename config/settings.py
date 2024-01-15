@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -74,16 +78,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-from decouple import config
-
-DB_PASSWORD = config('DB_PASSWORD')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE', default=''),
-        'NAME': config('DB_NAME', default=''),
+        'ENGINE': os.getenv('DB_ENGINE', default=''),
+        'NAME': os.getenv('DB_NAME', default=''),
         'USER': 'postgres',
-        'PASSWORD': config('DB_PASSWORD', default=''),
+        'PASSWORD': os.getenv('DB_PASSWORD', default=''),
     }
 }
 
@@ -143,5 +145,13 @@ LOGIN_URL = '/users/'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # адрес электронной почты Яндекс
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # пароль Яндекс приложения
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')  # адрес электронной почты Яндекс
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # пароль Яндекс приложения
+
+CACHE_ENABLED = os.getenv('CACHE_ENABLED') == 1
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv('CACHES_LOCATION'),
+    }
+}
